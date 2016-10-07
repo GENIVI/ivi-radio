@@ -1,0 +1,22 @@
+DeviceType: DAB
+SourceType: DAB_L
+Id Frequency: 180000
+Id Service: 0x101a
+Id Ensemble: 25
+Id Component: 21
+Name Subcomponent Label: SubcompLabelTestValue
+Name Subcomponent Abbreviation: SubcompAbbrevTestValue
+Name Dynamic Label: DynamicLabelTestValue
+Name Service Label: 1860 ist geil
+Name Service Abbreviation: BR 3
+Name Ensemble Label: EnsembleLabelTestValue
+Name Ensemble Abbreviation: EnsembleAbbrevTestValue
+Name Frequency Label: FrequencyLabelTestValue
+Meta Type: 8,4,7,5,6,3
+Meta String: 1,2,3,4,5,6
+Genre Static Pty: 6
+Genre Dynamic Pty: 7
+Flags: 119054368
+Quality Bit Error Rate: 5
+Quality Service: 12
+Quality Audio: 15

@@ -1,0 +1,15 @@
+DeviceType: AMFM
+SourceType: AMFM_FM
+Id Frequency: 93300
+Id Program Identifier: 0x101a
+Id Service: 3
+Name PS Code: Energy
+Name HD Label: Energy HD
+Name Radiotext: Energy Radiotext
+Meta Type: 0
+Meta String: 21
+Genre Pty: 6
+Flags: 139
+Quality Fieldstrength: 8
+Quality Multipath: 9
+Quality Digital: 10

@@ -1,0 +1,35 @@
+<xml>
+	<EPGProgram>
+		<ServiceID>4122</ServiceID>
+		<EPGEvent>
+			<ID>1</ID>
+			<ver>1</ver>
+			<reco>Yes</reco>
+			<name>Aktuelles Sportstudio</name>
+			<time>31.07.2013 22:00</time>
+			<dur>60</dur>
+			<fsc>8</fsc>	
+			<desc>Sechzig haut den Bayern die Bude voll. Erdrutschsieg an der Isar. Die hochgelobten Bayern werden mit einer 1 zu 8 Klatsche vom Lokalrivalen auf den Boden geholt.</desc>
+		</EPGEvent>
+		<EPGEvent>
+			<ID>3</ID>
+			<ver>1</ver>
+			<reco>Yes</reco>
+			<name>Sendungsname</name>
+			<time>31.07.2013 23:00</time>
+			<dur>60</dur>
+			<fsc>8</fsc>	
+			<desc>Tolle ultralange Beschreibung zur Sendung Sedungsname.</desc>
+		</EPGEvent>
+		<EPGEvent>
+			<ID>4</ID>
+			<ver>1</ver>
+			<reco>Yes</reco>
+			<name>Gummibaerenbande</name>
+			<time>31.07.2013 11:00</time>
+			<dur>30</dur>
+			<fsc>8</fsc>	
+			<desc>Herzog Igzorn setzt seine Schergen Zook und Gad um den Gummibaeren endlich den gar auszumachen. Doch mit hilfe ihre Saftes schaffen Cubbi, Grammi, Gruffi, Sunni, Zummi und Tummi es wiedereinmal den fiesen Ungeheuern zu entkommen.</desc>
+	</EPGEvent>
+	</EPGProgram>
+</xml>

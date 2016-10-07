@@ -1,0 +1,15 @@
+DeviceType: AMFM
+SourceType: AMFM_FM
+Id Frequency: 101300
+Id Program Identifier: 0xd318
+Id Service: 3
+Name PS Code: Antenne
+Name HD Label: Antenne Bayern HD
+Name Radiotext: Antenne Bayern Radiotext
+Meta Type: 0
+Meta String: 1
+Genre Pty: 6
+Flags: 0x008B
+Quality Fieldstrength: 8
+Quality Multipath: 9
+Quality Digital: 10

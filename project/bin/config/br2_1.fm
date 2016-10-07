@@ -1,0 +1,15 @@
+DeviceType: AMFM
+SourceType: AMFM_FM
+Id Frequency: 88400
+Id Program Identifier: 0xd312
+Id Service: 3
+Name PS Code: BR 2
+Name HD Label: Bayern 2 HD
+Name Radiotext: Bayern 2 Radiotext
+Meta Type: 0
+Meta String: 4
+Genre Pty: 6
+Flags: 7
+Quality Fieldstrength: 8
+Quality Multipath: 9
+Quality Digital: 10

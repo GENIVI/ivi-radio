@@ -1,0 +1,71 @@
+GENIVI Tuner API Simulation
+================
+:Author: Guido Ostkamp - guido.ostkamp@de.bertrandt.com, bernhard.singer@partner.bmw.de, matthias.freundel@partner.bmw.de
+:doctitle: Tuner_PoC
+
+Copyright
+---------
+Copyright (C) 2013, GENIVI Alliance, Inc.
+Copyright (C) 2013, BMW AG
+ 
+Contributions are licensed to the GENIVI Alliance under one or more
+Contribution License Agreements or MPL 2.0 .
+ 
+(C) Copyright
+This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a  copy of the MPL was not distributed with
+this file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+== License
+This project is licensed under MPL 2.0
+
+Contribution is done under GENIVI CLA or MPL2.0. 
+
+== Version
+The current version can be taken from the git.
+
+===============================================================================
+
+This Tuner API simulation consists of the following parts:
+
+bin         : Directory, where executables build will be placed in;
+              additionally contains 'config' subdirectory with station data
+doc         : this directory
+src-gen     : automatically generated code; created by export from 
+              Enterprise Architect, import in Yamaica tool, tweaking and 
+              generation of C++ standard and DBUS specific parts
+src         : handcrafted code representing Tuner Middleware and HMI,
+              based on classes, headers etc. contained in src-gen, and 
+              CommonAPI libraries and headers, DBUS, Ubuntu Linux
+              Please see the cpp files in src directory for more information
+Makefile.am
+configure.ac
+etc.        : Build configuration templates for autoconf/automake
+
+How to build and run:
+---------------------
+
+1. Install Ubuntu Linux (g++ 4.7.2 required)
+
+2. Install CommonAPI as per instructions (tested with 2.0)
+   Do not forget to create patched DBUS packages, install them and
+   reboot machine once afterwards
+
+3. Install this software in $DIR (choose directory of your choice)
+   cd $DIR
+   autoreconf -i
+   ./configure
+   make
+
+4. Run tests
+   # in one console/xterm window
+   cd $DIR/bin
+   ./myProvider    # start Tuner Middleware simulation (will not return)
+   
+   # in another console/xterm window
+   cd $DIR/bin
+   ./myClient 1    # start HMI client simulation (will not return)
+
+   # if needed, in yet another console/xterm window
+   cd $DIR/bin
+   ./myClient 2    # start second HMI client simulation (will not return)

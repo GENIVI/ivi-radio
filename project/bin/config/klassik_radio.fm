@@ -1,0 +1,15 @@
+DeviceType: AMFM
+SourceType: AMFM_FM
+Id Frequency: 107200
+Id Program Identifier: 2
+Id Service: 3
+Name PS Code: Klassik Radio
+Name HD Label: Klassik Radio HD
+Name Radiotext: Klassik Radio Radiotext
+Meta Type: 0
+Meta String: 24
+Genre Pty: 6
+Flags: 7
+Quality Fieldstrength: 8
+Quality Multipath: 9
+Quality Digital: 10

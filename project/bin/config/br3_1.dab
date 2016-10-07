@@ -1,0 +1,22 @@
+DeviceType: DAB
+SourceType: DAB_L
+Id Frequency: 172000
+Id Service: 0xd313
+Id Ensemble: 24
+Id Component: 25
+Name Subcomponent Label: SubcompLabelTestValue
+Name Subcomponent Abbreviation: SubcompAbbrevTestValue
+Name Dynamic Label: DynamicLabelTestValue
+Name Service Label: Bayern 3
+Name Service Abbreviation: BR 3
+Name Ensemble Label: EnsembleLabelTestValue
+Name Ensemble Abbreviation: EnsembleAbbrevTestValue
+Name Frequency Label: FrequencyLabelTestValue
+Meta Type: 1,7,8,5,3
+Meta String: 4,5,6,7,3
+Genre Static Pty: 6
+Genre Dynamic Pty: 7
+Flags: 119054368
+Quality Bit Error Rate: 9
+Quality Service: 10
+Quality Audio: 11

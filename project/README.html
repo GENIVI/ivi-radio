@@ -1,0 +1,106 @@
+<body style="font-style: normal; ">
+<h1 style="color:blue">GENIVI Tuner API Simulation</h1>
+ 
+<h2 style="color:blue">Copyright</h2>
+ 
+<p>
+Copyright (C) 2013, GENIVI Alliance, Inc.<br />
+Copyright (C) 2013, BMW AG<br />
+ <br />
+Contributions are licensed to the GENIVI Alliance under one or more<br />
+Contribution License Agreements or MPL 2.0 .<br />
+ <br />
+(C) Copyright<br />
+This Source Code Form is subject to the terms of the<br />
+Mozilla Public License, v. 2.0. If a  copy of the MPL was not distributed with<br />
+this file, You can obtain one at http://mozilla.org/MPL/2.0/.<br />
+<br />
+Bernhard Singer   - bernhard.singer@partner.bmw.de<br />
+Matthias Freundel - matthias.freundel@partner.bmw.de<br />
+</p>
+ 
+<h2 style="color:blue">Content</h2>
+<p>
+This Tuner API simulation consists of the following parts:<br />
+<br />
+bin         : Directory, where executables build will be placed in;
+              additionally contains 'config' subdirectory with station data<br />
+doc         : this directory contains a readme, a testplan, header files and images for the doxygen documentation
+				  land the doxygen documentation itself if built<br />
+src-gen     : automatically generated code; created by export from
+              Enterprise Architect, import in Yamaica tool, tweaking and 
+              generation of C++ standard and DBUS specific parts<br />
+src         : handcrafted sourcecode files representing Tuner Middleware and HMI
+include	   : handcrafted header files representing Tuner Middleware and HMI
+              <br />
+Makefile.am<br />
+configure.ac<br />
+create_doxygen_docu.sh<br />
+etc.        : Build configuration templates for autoconf/automake<br />
+</p>
+ 
+<h2 style="color:blue">Build and run</h2>
+<p>
+<ol>
+	<li>
+		Install Ubuntu Linux (g++ 4.7.2 required)
+	</li>
+	<li>
+		Install CommonAPI as per instructions (tested with 2.0.3)
+   	Do not forget to create patched DBUS packages, install them and
+   	reboot machine once afterwards
+   </li>
+	<li>
+		<span style="color:black">	Install this software in $DIR (choose directory of your choice) <br />
+  		<span style="color:blue"> 	cd $DIR 			</span> <br />
+   	<span style="color:blue">	autoreconf -i 	</span> <br />
+   	<span style="color:blue">	./configure 	</span> <br />
+   	<span style="color:blue">	make 				</span> <br />
+   </li>
+	<li> 
+		<span style="color:black"> Run tests 									</span> <br />
+   	<span style="color:black"> # in one console/xterm window 		</span> <br />
+      <span style="color:blue"> cd $DIR/bin 									</span> <br />
+	   <span style="color:blue">./Middleware 									</span> <br />  
+   	<span style="color:black"> # in another console/xterm window 	</span> <br />
+   	<span style="color:blue"> cd $DIR/bin 									</span> <br />
+   	<span style="color:blue"> ./Client 1    # start HMI client simulation (will not return) </span> <br />
+		<span style="color:black"> # if needed, in yet another console/xterm window</span> <br />
+   	<span style="color:blue">cd $DIR/bin </span> <br />
+   	<span style="color:blue"> ./Client 2    # start second HMI client simulation (will not return) </span> <br />
+   	<span style="color:black"> # in one console/xterm window 		</span> <br />
+      <span style="color:blue"> cd $DIR/bin 									</span> <br />
+	   <span style="color:blue">./Middleware 									</span> <br />  
+   	<span style="color:black"> # in another console/xterm window 	</span> <br />
+   	<span style="color:blue"> cd $DIR/bin 									</span> <br />
+   	<span style="color:blue"> ./Client 2    # start second HMI client simulation (will not return)</span> <br />
+   </li>
+   <li>
+    	<span style="color:black"> alternatively run testcases with python script automatically. This will run a set of testcases described in the 
+    	python script (e.g. Seek, GetList, configure announcement,...) to clear all preconditions to continue manual testing. After executing the 
+    	Testcases the automatic part ends and the Client waits for manual console input.	</span> <br />
+		<span style="color:black"> # in one console/xterm window 		</span> <br />
+      <span style="color:blue"> cd $DIR/bin 									</span> <br />
+	   <span style="color:blue">./Middleware 									</span> <br />
+		<span style="color:black"> # in another console/xterm window 	</span> <br />
+	   <span style="color:blue"> cd $DIR/bin 									</span> <br />  
+    	<span style="color:blue"> ./autotest.py								</span> <br />
+   </li>
+   
+</ol>
+<br />
+	<p>To use the PoC take the testplan:<br />
+	<a href="https://collab.genivi.org/wiki/download/attachments/27820275/Testplan_1_0.pdf?version=1&modificationDate=1371652128000"> Testplan </a>
+	</p>
+ 
+</p>
+<h2 style="color:blue">Links</h2>
+ 
+<p>
+  <a href="http://git.projects.genivi.org/?p=tunerstmgr-poc.git;a=summary">Download PoC here</a> <br>
+  <a href="https://collab.genivi.org/wiki/display/genivi/MGEGTunerProofofConcept">PoC additional Information</a> <br>
+  <a href="https://collab.genivi.org/wiki/display/genivi/Tuner+Station+Management+Proof-Of-Concept">PoC additional Information</a> <br>
+  <a href="https://collab.genivi.org/wiki/download/attachments/27820275/Tuner_PoC_Setup_1_0.pdf?version=1&modificationDate=1372759991000">detailled install guide</a> 
+</p>
+ 
+</body>

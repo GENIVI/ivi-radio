@@ -1,0 +1,265 @@
+Description of test cases:
+
+The simulated stations are configured in the subdirectory 'bin/config' in
+single files.  The entries for FM and DAB stations are of course different.
+Until a 'seek' with 'autostore' has been done, the simulator currently does
+not know anything about the stations since the configuration files have not
+been read. Hence when startTune or seek (with auto-up/-down) are used it will
+not identify / find any station and will not be able to return any lists.
+
+Following test cases are known to work:
+
+Start myProvider and myClient 1:
+In myClient application use in the following order:
+
+seek - AMFM - SM_AUTOSTORE - Genre 0 - Flags 0
+    After a short time, seek will start from beginning to end of valid
+    frequencies of FM area. The seek progress will not be reported to the
+    client (HMI) in regular intervals, since this has not been asked for
+    through a controlUpdate request. However the end will be reported
+    with SM_OFF.
+
+controlUpdate - UE_SEEK - UT_NOTIFICATION - AMFM_FM - ST_UNDEF
+    This will enable the progress report during a scan for AMFM_FM.
+
+controlUpdate - UE_SEEK - UT_NOTIFICATION - DAB_DAB - ST_UNDEF
+    This will enable the progress report during a scan for DAB.
+
+seek - AMFM - SM_AUTOSTORE - Genre 0 - Flags 0
+    same as above, but now the seek progress will be reported to the
+    client (HMI) every 10%.
+
+controlUpdate - UE_SEEK - UT_NONE - AMFM_FM - ST_UNDEF
+    This will disable the progress report during a scan.
+
+controlUpdate - UE_STATION_LIST - UT_ONCE - UNDEF_SOURCE - ST_UNDEF
+    will return an empty list, since DAB seek has not been completed yet
+
+controlUpdate - UE_STATION_LIST - UT_ONCE - AMFM_FM - ST_UNDEF
+    will deliver a list of stations. From this point in time the stations
+    are known to the client and can be used in a startTune request for
+    tuning, as well as in a seek (auto-up/-down) request to find the
+    next receivable station.
+
+seek - DAB - SM_AUTOSTORE - Genre 0 - Flags 0
+    Same as above for DAB frequency range
+
+controlUpdate - UE_STATION_LIST - UT_ONCE - DAB_DAB - ST_UNDEF
+    Same as above for DAB stations
+
+controlUpdate - UE_STATION_LIST - UT_ONCE - UNDEF_SOURCE - ST_UNDEF
+    will deliver a list with only FM entries, as DAB scan has not been
+    performed yet.
+
+controlUpdate - UE_STATION_LIST - UT_ONCE - AMFM_FM - ST_UNDEF
+    will deliver a list of stations. From this point in time the stations
+    are known to the client and can be used in a startTune request for
+    tuning, as well as in a seek (auto-up/-down) request to find the
+    next receivable station.
+
+seek - DAB - SM_AUTOSTORE - Genre 0 - Flags 0
+    Same as above for DAB frequency range
+
+controlUpdate - UE_STATION_LIST - UT_ONCE - DAB_DAB - ST_UNDEF
+    Same as above for DAB stations
+
+controlUpdate - UE_STATION_LIST - UT_ONCE - UNDEF_SOURCE - ST_UNDEF
+    Now that both seeks have been performed, it will deliver the
+    combined list of stations with duplicates removed, i.e.
+    a list of undef stations with just PI-Code / Service ID as ID and
+    the common general name of the stations.
+    Once this list has been received, it is now possible to startTune
+    in SM_LIST mode with UNDEF_DEVICE
+
+seek - anything except DAB or AMFM - any values ...
+    Will fail as 'not applicable'
+
+controlUpdate - anything - anything - anything except DAB_DAB / AMFM_FM or UNDEF_SOURCE - anything
+    Will fail as 'not applicable'
+
+startTune - anything except SM_DIRECT or SM_LIST - anything ...
+    Will fail as 'not applicable'
+
+startTune - anything - anything except AMFM or DAB - anything
+    Will fail as 'not applicable'
+
+startTune - SM_DIRECT - AMFM - 90500
+    will tune to 90.5 Mhz, and deliver a currentStation info that at
+    this frequency there is no receivable station.
+
+startTune - SM_DIRECT - AMFM - 90400
+    Will fail as 'not applicable' since this tuner is already tuned
+    and tuning must be aborted first using abortTune API.
+
+seek - AMFM - SM_AUTO_UP - Genre 0 - Flags 0
+    will search upwards to next receivable station which is e.g.
+    Bayern 1 at 91.3 Mhz. The progress will be reported if configured.
+    The end of seek will be reported with SM_OFF, and the
+    tuning will be reported by currentStation broadcast.
+
+seek - AMFM - SM_AUTO_DOWN - Genre 0 - Flags 0
+    will search backwards and find Bayern 3 at 90.0 Mhz,
+    reports see above.
+
+abortTune - AMFM
+    will abort the tuning and free the tuner
+
+abortTune - DAB
+    Will fail as 'not applicable' since DAB tuner currently is not tuned
+
+startTune - SM_LIST - AMFM
+    will display the AMFM list retrieved from controlUpdate and let you
+    choose one entry. The selected station will then be tuned to.
+
+abortTune - AMFM
+    will abort the tuning and free the tuner
+
+startTune - SM_LIST - DAB
+    will display the DAB list retrieved from controlUpdate and let you
+    choose one entry. The selected station will then be tuned to.
+
+abortTune - DAB
+    will abort the tuning and free the tuner
+
+startTune - SM_LIST - UNDEF_DEVICE
+    will display the combined list retrieved from controlUpdate and let you
+    choose one entry. One station matching the selected PIcode / Service id
+    will then be tuned to.
+
+abortTune - AMFM or DAB
+    (depending on last choice) will abort the tuning and free the tuner
+
+makePermanent - AMFM - select Station from list - TRUE
+    permanent flag should be turned on
+
+makePermanent - AMFM - select another Station from list - TRUE
+    permanent flag should be turned on
+
+controlUpdate - UE_STATION_LIST - UT_ONCE - AMFM_FM - ST_PERMANENT
+    both stations should be returned
+
+makePermanent - AMFM - select one previously selected station from list - FALSE
+    permanent flag should be turned off for that station
+
+controlUpdate - UE_STATION_LIST - UT_ONCE - AMFM_FM - ST_PERMANENT
+    remaining station of the former two should be returned
+
+*** FRESH START REQUIRED ***
+
+controlUpdate - UE_STATION_LIST - UT_NOTIFICATION -AMFM_FM - ST_UNDEF
+    enables the station list update feature
+
+seek - AMFM - SM_AUTOSTORE - Genre 0 - Flags 0
+    should run a autostore seek and deliver a list of changed stations
+
+startTune - SM_LIST - AMFM
+    should allow to choose from stations just received
+
+*** any change within station list and subsequent seek should deliver
+*** new updates, with attribute CHANGED set and RECEIVABLE set when
+*** station is either NEW or again receivable, or in case it is no
+*** longer receivable, have the RECEIVABLE flag removed
+
+On client side:
+
+seek - AMFM - SM_AUTOSTORE - Genre 0 - Flags 0
+
+controlUpdate - UE_STATION_LIST - UT_ONCE - AMFM_FM - ST_UNDEF
+
+startTune - SM_LIST - AMFM - Gong
+
+On provider side:
+
+sendAnnouncement - Gong - AT_RoadTraffic
+   will send announcement to all interested HMI clients
+
+On client side:
+
+changeComponentTypeConfiguration - CT_ANNOUNCEMENT - ACTIVE -
+1 - AT_RoadTraffic - Active TRUE - Priority 1
+   should send the info to the provider that this client is
+   furtheron interested in this kind of announcement
+
+On provider side:
+
+sendAnnouncement - Gong - AT_RoadTraffic
+   will send announcement to all interested HMI clients
+   it should be received on the client now
+
+print active announcements
+   shows which announcements are outstanding to which client
+
+On client side:
+
+printActiveAnnouncements
+   shows which announcements have been received yet
+
+selectComponent - component 4711 - TRUE
+   aborts the announcement from the client
+
+printActiveAnnouncements
+   no longer shows the announcement
+
+On provider side:
+
+printActiveAnnouncements
+   also no longer shows the announcement after the
+   cancellation from client has been received
+
+sendAnnouncement - Gong - AT_RoadTraffic
+   will send announcement to all interested HMI clients
+   it should be received on the client now
+
+print active announcements
+   shows which announcements are outstanding to which client
+
+On client side:
+
+printActiveAnnouncements
+   shows which announcements have been received yet
+
+On provider side:
+
+send Announcement finished - Gong - AT_RoadTraffic
+   finishes the announcement from server side
+
+print active announcements
+   shows which announcements are outstanding to which client
+   announcement is no longer visible
+
+On client side:
+
+printActiveAnnouncements
+   shows which announcements have been received yet
+   announcement is no longer visible
+
+requestComponentTypeConfiguration - CT_ANNOUNCEMENT
+   request current configuration from client
+
+*** fresh start ***
+
+HMI1: seek - AMFM - SM_AUTOSTORE - Genre 0 - Flags 0
+
+HMI1: controlUpdate - UE_STATION_LIST - UT_ONCE - AMFM_FM - ST_UNDEF
+
+HMI2: controlUpdate - UE_STATION_LIST - UT_ONCE - AMFM_FM - ST_UNDEF
+
+HMI1: changeComponentTypeConfiguration - CT_ANNOUNCEMENT - ACTIVE -
+1 - AT_RoadTraffic - Active TRUE - Priority 1
+
+HMI2: changeComponentTypeConfiguration - CT_ANNOUNCEMENT - ACTIVE -
+1 - AT_RoadTraffic - Active TRUE - Priority 1
+
+HMI1: startTune - SM_LIST - AMFM - Gong
+
+HMI2: startTune - SM_LIST - AMFM - LoRa
+
+MW: sendAnnouncement - Gong - AT_RoadTraffic (to both HMI)
+
+MW: sendAnnouncementFinished - Gong - AT_RoadTraffic (to both HMI)
+
+MW: sendAnnouncement - Gong - AT_RoadTraffic (to both HMI)
+
+HMI1: abortTune - AMFM (Gong)
+
+MW: Cancel both announcements at HMI1 + HMI2

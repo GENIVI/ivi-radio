@@ -1,0 +1,15 @@
+DeviceType: AMFM
+SourceType: AMFM_FM
+Id Frequency: 89000
+Id Program Identifier: 0x101d
+Id Service: 3
+Name PS Code: Radio2Day
+Name HD Label: Radio2Day HD
+Name Radiotext: Radio2Day Radiotext
+Meta Type: 1,4,9
+Meta String: 26,27,28
+Genre Pty: 6
+Flags: 7
+Quality Fieldstrength: 8
+Quality Multipath: 9
+Quality Digital: 10

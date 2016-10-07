@@ -1,0 +1,15 @@
+DeviceType: AMFM
+SourceType: AMFM_FM
+Id Frequency: 103200
+Id Program Identifier: 0xd314
+Id Service: 3
+Name PS Code: BR 4
+Name HD Label: Bayern 4 HD
+Name Radiotext: Bayern 4 Radiotext
+Meta Type: 4
+Meta String: 15
+Genre Pty: 6
+Flags: 7
+Quality Fieldstrength: 8
+Quality Multipath: 9
+Quality Digital: 10

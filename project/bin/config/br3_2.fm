@@ -1,0 +1,15 @@
+DeviceType: AMFM
+SourceType: AMFM_FM
+Id Frequency: 98500
+Id Program Identifier: 0xd313
+Id Service: 3
+Name PS Code: BR 3
+Name HD Label: Bayern 3 HD
+Name Radiotext: Bayern 3 Radiotext
+Meta Type: 7,9
+Meta String: 13,14
+Genre Pty: 6
+Flags: 7
+Quality Fieldstrength: 8
+Quality Multipath: 9
+Quality Digital: 10

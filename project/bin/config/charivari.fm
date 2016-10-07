@@ -1,0 +1,15 @@
+DeviceType: AMFM
+SourceType: AMFM_FM
+Id Frequency: 95500
+Id Program Identifier: 0x101b
+Id Service: 3
+Name PS Code: Charivari
+Name HD Label: Charivari HD
+Name Radiotext: Charivari Radiotext
+Meta Type: 4
+Meta String: 17
+Genre Pty: 5
+Flags: 7
+Quality Fieldstrength: 8
+Quality Multipath: 9
+Quality Digital: 10

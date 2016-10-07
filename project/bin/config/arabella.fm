@@ -1,0 +1,15 @@
+DeviceType: AMFM
+SourceType: AMFM_FM
+Id Frequency: 105200
+Id Program Identifier: 0x101f
+Id Service: 3
+Name PS Code: Radio Arabella
+Name HD Label: Radio Arabella - HD
+Name Radiotext: Radio Arabelle Radiotext
+Meta Type: 0
+Meta String: 2
+Genre Pty: 6
+Flags: 7
+Quality Fieldstrength: 8
+Quality Multipath: 9
+Quality Digital: 10

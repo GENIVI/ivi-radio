@@ -1,0 +1,15 @@
+DeviceType: AMFM
+SourceType: AMFM_FM
+Id Frequency: 90000
+Id Program Identifier: 0xd315
+Id Service: 3
+Name PS Code: BR 5
+Name HD Label: Bayern 5 HD
+Name Radiotext: Bayern 5 Radiotext
+Meta Type: 9
+Meta String: 16
+Genre Pty: 6
+Flags: 7
+Quality Fieldstrength: 8
+Quality Multipath: 9
+Quality Digital: 10

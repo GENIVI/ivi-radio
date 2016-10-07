@@ -1,0 +1,15 @@
+DeviceType: AMFM
+SourceType: AMFM_FM
+Id Frequency: 96300
+Id Program Identifier: 0x1012
+Id Service: 3
+Name PS Code: Gong
+Name HD Label: Gong HD
+Name Radiotext: Gong Radiotext
+Meta Type: 0
+Meta String: 22
+Genre Pty: 6
+Flags: 7
+Quality Fieldstrength: 8
+Quality Multipath: 9
+Quality Digital: 10

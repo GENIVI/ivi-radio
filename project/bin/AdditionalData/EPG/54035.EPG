@@ -1,0 +1,15 @@
+<xml>
+	<EPGProgram>
+		<ServiceID>54035</ServiceID>
+		<EPGEvent>
+			<ID>2</ID>
+			<ver>1</ver>
+			<reco>Yes</reco>
+			<name>ranissimo</name>
+			<time>01.08.2013 19:15</time>
+			<dur>60</dur>
+			<fsc>16</fsc>	
+			<desc>Fussball vom feinsten. Die Sechzger auf dem Durchmarsch.</desc>
+		</EPGEvent>
+	</EPGProgram>
+</xml>

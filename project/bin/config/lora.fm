@@ -1,0 +1,15 @@
+DeviceType: AMFM
+SourceType: AMFM_FM
+Id Frequency: 92400
+Id Program Identifier: 0xd01d
+Id Service: 3
+Name PS Code: LoRa
+Name HD Label: LoRa HD
+Name Radiotext: LoRa Radiotext
+Meta Type: 0
+Meta String: 25
+Genre Pty: 6
+Flags: 7
+Quality Fieldstrength: 8
+Quality Multipath: 9
+Quality Digital: 10

@@ -1,0 +1,31 @@
+<xml>
+	<ServiceID>4125</ServiceID>
+	<pageNumber>100</pageNumber>
+	<subPageNumber>0</subPageNumber>
+	<page>
+		<line>/bgbl                             /m1/m1     </line>
+		<line>/bgbl      /m5    /m6/m6   /m6/m6            </line>     
+		<line>/bgbl	/m4/5/4  /m8/m8   		   </line>
+		<line>/bgbl	/m4/m5    /m5/8			   </line>
+		<line>/bgb 					   </line>
+		<line>    /bBahngipfel zu Chaos in Mainz....  /b106</line>
+		<line>    /bMali: Keita vor Wahlerfolg......  /b107</line>
+		<line>    /bNigeria: Anschlag auf Moschee...  /b111</line>
+		<line>	      				 	  </line>
+		<line>    /b2.Liga: Fürth schlägt K'lautern.. /b276</line>
+		<line>    /bStabhochsprung-Gold für Holzdeppe /b822</line>
+		<line>    /bSchwanitz holt Kugel-Silber...... /b825</line>
+		<line>    /bLiveticker zu den Wettbewerben... /m823</line>
+		<line>	 					   </line>
+		<line>/hgb                                         </line>
+		<line>/bgbl/w   05.30  Morgenmagazin UT.........309</line> 
+		<line>/bgbl/w        Das Erste am Morgen           </line>
+		<line>/bgbl/hb  09.00 Tagesschau                   </line>
+		<line>/s				 	   </line>
+		<line>						   </line>
+		<line> /bTagesschau.... /b101  /bKultur......../b400</line>
+		<line> /bWirtschaft.... /b104  /bWissen......../b500</line>
+		<line> /bSport..... /b200/600  /bRatgeber....../b530</line>
+		<line> /bProgramm...... /b101  /bInhalt (A-Z)../b400</line>
+	</page>
+</xml>

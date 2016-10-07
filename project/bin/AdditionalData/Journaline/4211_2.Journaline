@@ -1,0 +1,36 @@
+<xml>
+	<JObject>
+		<ID>1</ID>
+		<type>List message</type>
+		<static>1</static>
+		<title>2. Bundeliga Tabelle - 1. Spieltag</title>
+		<dlan>ger</dlan>
+		<jlink>
+			<descr>a</descr>
+			<id>1</id>
+		</jlink>
+		<Text>text</Text>
+	</JObject>
+	<jlist>
+		<text>Pl.  Verein              Sp.S U N Tore Pkt. </text>
+		<text>1   SpVgg Greuther Fürth 	1 1 0 0 2:0 +2 3  </text>
+		<text>2   FC Erzgebirge Aue 	1 1 0 0 2:1 +1 3  </text>
+		<text>2   VfL Bochum 1848 	1 1 0 0 2:1 +1 3  </text>
+		<text>4   1. FC Kaiserslautern 	1 1 0 0 1:0 +1 3  </text>
+		<text>4   FC St. Pauli 		1 1 0 0 1:0 +1 3  </text>
+		<text>4   Fortuna Düsseldorf 	1 1 0 0 1:0 +1 3  </text>
+		<text>4   Karlsruher SC 	1 1 0 0 1:0 +1 3  </text>
+		<text>8   1. FC Köln 		1 0 1 0 1:1 0 1   </text>
+		<text>8   SG Dynamo Dresden 	1 0 1 0 1:1 0 1   </text>
+		<text>10  SV Sandhausen 	1 0 1 0 0:0 0 1   </text>
+		<text>10  VfR Aalen 		1 0 1 0 0:0 0 1   </text>
+		<text>12  1. FC Union Berlin 	1 0 0 1 1:2 -1 0  </text>
+		<text>12  FC Ingolstadt 04 	1 0 0 1 1:2 -1 0  </text>
+		<text>14  FC Energie Cottbus 	1 0 0 1 0:1 -1 0  </text>
+		<text>14  FSV Frankfurt 1899 	1 0 0 1 0:1 -1 0  </text>
+		<text>14  SC Paderborn 07 	1 0 0 1 0:1 -1 0  </text>
+		<text>14  TSV 1860 München 	1 0 0 1 0:1 -1 0  </text>
+		<text>18  DSC Arminia Bielefeld 1 0 0 1 0:2 -2 0  </text>
+	</jlist>
+</xml>
+
