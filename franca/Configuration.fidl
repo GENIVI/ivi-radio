@@ -1,0 +1,520 @@
+package IVIRadio.Configuration import
+IVIRadio.Configuration.ConfigurationTypesEnum.* from "Configuration.fidl"
+import IVIRadio.Configuration.ConfigurationOptions.* from "Configuration.fidl"
+import IVIRadio.Types.Types.* from "Types.fidl" import
+IVIRadio.Configuration.ConfigurationOptionsGetter.* from "Configuration.fidl"
+
+<**
+	@author : EGMG_Tuner
+**>
+
+interface Configuration {
+	version {
+		major 2
+		minor 0
+	}
+
+	<**
+		@description : change configuration of a basic functionalites like following or smart favorite options. it is possible to set more then one configuration at a time by adding multiple functionality types and configuration to the arrays
+	**>
+	method changeFunctionalityConfiguration {
+		in {
+
+			<**
+				@description : array of basic functionality types of which the configuration should be set
+			**>
+			ConfigurationTypesEnum.FunctionalityTypes functionalityTypes
+
+			<**
+				@description : array of options that should be set according to the different functionality types
+			**>
+			ConfigurationOptions.FuntionalityOptions functionalityOptionsSet
+
+			<**
+				@description : an optional handle for identifying the request
+			**>
+			UInt32 handle
+		}
+		out {
+
+			<**
+				@description : the handle of the corresponding request
+			**>
+			UInt32 handleOut
+
+			<**
+				@description : the result of the request
+			**>
+			Feedback feedback
+		}
+	}
+
+	<**
+		@description : request configuration of basic functionalities like following or conditional access. it is possible to request more than one configuration at a time by adding multiple functionality types and get options to the arrays
+	**>
+	method requestFunctionalityConfiguration {
+		in {
+
+			<**
+				@description : basic functionalities the configuration is requested for
+			**>
+			ConfigurationTypesEnum.FunctionalityTypes functionalityTypes
+
+			<**
+				@description : spcify the request by giving  request configurations matching to the functionality types
+			**>
+			ConfigurationOptionsGetter.FuntionalityOptionsGet functionalityOptionsGet
+
+			<**
+				@description : an optional handle for identifying the request
+			**>
+			UInt32 handle
+		}
+		out {
+
+			<**
+				@description : the handle of the corresponding request
+			**>
+			UInt32 handle_out
+
+			<**
+				@description : the result of the request
+			**>
+			Feedback feedback
+		}
+	}
+
+	<**
+		@description : broadcast to return the requested functionality configuration
+	**>
+	broadcast functionalityConfiguration {
+		out {
+
+			<**
+				@description : functionality types for the requested or set configuration
+			**>
+			ConfigurationTypesEnum.FunctionalityTypes functionalityTypes
+
+			<**
+				@description : current configurations of the requested functionalities
+			**>
+			ConfigurationOptions.FuntionalityOptions functionalityOptions
+
+			<**
+				@description : the handle of the corresponding request
+			**>
+			UInt32 handle_out
+
+			<**
+				@description : execution state of the job. if successful finished EC_OK
+			**>
+			ErrorCodes errorCode
+		}
+	}
+
+}
+
+<**
+	@description : package defines all the structures needed to change the configuration of the functionality types
+	@author : MGEG_Tuner
+**>
+typeCollection ConfigurationOptions {
+	version {
+		major 2
+		minor 0
+	}
+	array FuntionalityOptions of FunctionalityOption
+
+	union FunctionalityOption {
+		HDOptions HDOptions
+		FollowingOptions followingOptions
+		SmartFavoriteOptions smartFavoriteOptions
+		CountryVariantsOptions countryVariant
+		CoverageAreaOptions coverageAreaOptions
+		AvailableBandoptions availableBandOptions
+		InterfaceVersionOptions interfaceVersionOptions
+		AMModiOptions amModiOptions
+		RDSOptions rdsOptions
+		DLSOptions dlsOptions
+		RTOptions rtOptions
+	}
+
+	struct RegionalisationOptions {
+
+		<**
+			@description : device types for which coding options are requested. here only AMFM makes sense
+		**>
+		DeviceTypes deviceTypes
+		Activations activations
+	}
+
+	struct AvailableBandoptions {
+		SourceTypes availableBands
+		DeviceTypes deviceTypes
+	}
+
+	struct CoverageAreaOptions {
+
+		<**
+			@description : possible current receiver areas 
+		**>
+		ConfigurationTypesEnum.CountryVariants countryVariants
+
+		<**
+			@description : Device Types for  the country variants 
+		**>
+		DeviceTypes deviceTypes
+	}
+
+	struct DLSOptions {
+		Activations activations
+
+		<**
+			@description : device types for the coding options
+		**>
+		DeviceTypes deviceTypes
+	}
+
+	struct RDSOptions {
+		Activations activations
+
+		<**
+			@description : device types for the coding options
+		**>
+		DeviceTypes deviceTypes
+	}
+
+	struct RTOptions {
+		Activations activations
+
+		<**
+			@description : device types for the coding options
+		**>
+		DeviceTypes deviceTypes
+	}
+
+	struct AMModiOptions {
+
+		<**
+			@description : possible  modi for amplitude modulation analog device
+		**>
+		ConfigurationTypesEnum.AMMode amMode
+
+		<**
+			@description : device type for the am modi. in this special case only am makes sense
+		**>
+		DeviceType deviceType
+	}
+
+	struct InterfaceVersionOptions {
+		UInt32 minorVersion
+		UInt32 majorVersion
+	}
+
+	struct HDOptions {
+		Activation activation
+	}
+
+	struct CountryVariantsOptions {
+
+		<**
+			@description : device types for which the country variant are
+		**>
+		DeviceTypes deviceTypes
+
+		<**
+			@description : country variants for the different device types
+		**>
+		ConfigurationTypesEnum.CountryVariants countryVariants
+	}
+
+	struct FollowingOptions {
+
+		<**
+			@description : activations for the different following states
+		**>
+		Activations activations
+		ConfigurationTypesEnum.FollowingTypes followingStates
+	}
+
+	struct SmartFavoriteOptions {
+
+		<**
+			@description : Activation for smart favorite. Here only for SDRAS
+		**>
+		Activation activity
+	}
+
+	struct EPGOptions {
+		ConfigurationTypesEnum.EPGCollectionMode collectionMode
+	}
+
+	struct TPEGOptions {
+		ConfigurationTypesEnum.TPEGRequestMode requestMode
+	}
+
+}
+
+<**
+	@description : package defines all the structures needed to request the configuration of the functionality types
+	@author : MGEG_Tuner
+**>
+typeCollection ConfigurationOptionsGetter {
+	version {
+		major 2
+		minor 0
+	}
+	struct EPGOptionsGet {
+	}
+
+	struct TPEGOptionsGet {
+	}
+
+	<**
+		@description : Array of functionality options. This parameter is part of the request method. Using a array of union types enables to request  multiple configuration of different functionality types at once.
+	**>
+	array FuntionalityOptionsGet of FunctionalityOptionGet
+
+	union FunctionalityOptionGet {
+		HDOptionsGet HDOptions
+		FollowingOptionsGet followingOptions
+		SmartFavoriteOptionsGet smartFavoriteOptions
+		CountryVariantsOptionsGet countryVariant
+		CoverageAreaOptionsGet coverageAreaOptions
+		AvailableBandoptionsGet availableBandOptions
+		InterfaceVersionOptionsGet interfaceVersionOptions
+		AMModiOptionsGet amModiOptions
+		RDSOptionsGet rdsOptions
+		RTOptionsGet rtOptions
+		DLSOptionsGet dlsOptions
+		RegionalisationOptionsGet regionalisationOptions
+	}
+
+	struct RegionalisationOptionsGet {
+
+		<**
+			@description : device types for which coding options are requested. here only AMFM makes sense
+		**>
+		DeviceTypes deviceTypes
+	}
+
+	struct DLSOptionsGet {
+
+		<**
+			@description : device types for which coding options are requested. here only AMFM makes sense
+		**>
+		DeviceTypes deviceTypes
+	}
+
+	struct AvailableBandoptionsGet {
+
+		<**
+			@description : device types for which available band are requested
+		**>
+		DeviceTypes deviceTypes
+	}
+
+	struct RTOptionsGet {
+
+		<**
+			@description : device types for which coding options are requested. here only AMFM makes sense
+		**>
+		DeviceTypes deviceTypes
+	}
+
+	struct CoverageAreaOptionsGet {
+
+		<**
+			@description : device types for which country variants are requested
+		**>
+		DeviceTypes deviceTypes
+	}
+
+	struct AMModiOptionsGet {
+
+		<**
+			@description : device type for am modi. In this special case only AM makes sense
+		**>
+		DeviceType deviceType
+	}
+
+	struct RDSOptionsGet {
+
+		<**
+			@description : device types for which coding options are requested. here only AMFM makes sense
+		**>
+		DeviceTypes deviceTypes
+	}
+
+	struct InterfaceVersionOptionsGet {
+	}
+
+	struct HDOptionsGet {
+
+		<**
+			@description : device type for the HD Options are. Here only FM makes sense
+		**>
+		DeviceType deviceType
+	}
+
+	struct CountryVariantsOptionsGet {
+
+		<**
+			@description : device Types for which the country variants are requested
+		**>
+		DeviceTypes deviceTypes
+	}
+
+	struct FollowingOptionsGet {
+		ConfigurationTypesEnum.FollowingTypes followingTypes
+	}
+
+	struct SmartFavoriteOptionsGet {
+
+		<**
+			@description : device type for which the smart favorite options are requested. Here only SDARS makes sense
+		**>
+		DeviceType deviceType
+	}
+
+}
+
+<**
+	@author : EGMG_Tuner
+**>
+typeCollection ConfigurationTypesEnum {
+	version {
+		major 2
+		minor 0
+	}
+
+	<**
+		@description : vector of country variants
+	**>
+	array CountryVariants of CountryVariant
+
+	<**
+		@description : vector of following types
+	**>
+	array FollowingTypes of FollowingType
+
+	<**
+		@description : vector of functionality types
+	**>
+	array FunctionalityTypes of FunctionalityType
+
+	<**
+		@description : definition of possible functionality types for that configuration can be changed
+	**>
+	enumeration FunctionalityType {
+
+		<**
+			@description : digital radiobroadcasting that complements fm radio
+		**>
+		HD
+		Following
+		ParentalLock
+		SmartFavorite
+		CIModule
+		AvailableBand
+		CountryVariant
+		Coding
+		CoverageArea
+		InterfaceVersion
+		AMModi
+		Regionalisation
+		RT
+		DLS
+		RDS
+		EPG
+		TPEG
+	}
+
+	enumeration AMMode {
+
+		<**
+			@description : for AM is only medium wave available
+		**>
+		AM_ONLY_MW
+
+		<**
+			@description : for AM is only long wave available
+		**>
+		AM_ONLY_LW
+
+		<**
+			@description : for AM is bot medium and long wave available
+		**>
+		AM_MWLW
+	}
+
+	<**
+		@description : definition of possible modes to be set for amplitude modulation radio broadcasting
+	**>
+	enumeration FollowingType {
+		FM_INTERNAL
+		FM_DAB
+		DAB_INTERNAL
+		DAB_FM
+		DVBT_INTERNAL
+		DVBT_DAB
+	}
+
+	<**
+		@description : definition if country variants to be set for different functionality types
+	**>
+	enumeration CountryVariant {
+		CV_EUROPE
+		CV_AUSTRALIA
+		CV_HONGKONG
+		CV_KOREA
+		CV_CHINA
+		CV_USA
+		CV_OZEANIEN
+		CV_JAPAN
+		CV_EUROPE_ROW
+	}
+
+	<**
+		@description : definition of possible request modes for tpeg data
+	**>
+	enumeration TPEGRequestMode {
+
+		<**
+			@description : request tpeg data only from the current station
+		**>
+		RM_CURRENT_STATION
+
+		<**
+			@description : request tpeg data from the whole current ensemble
+		**>
+		RM_CURRENT_ENSEMBLE
+
+		<**
+			@description : request tpeg data from the whole current ensemble
+		**>
+		RM_ANY_ENSEMBLE
+	}
+
+	<**
+		@description : enumeration of different collection modes for EPG data.
+	**>
+	enumeration EPGCollectionMode {
+
+		<**
+			@description : <font color="#400000">no specific mode.</font>
+		**>
+		CM_NO_COLLECTION_MODE
+
+		<**
+			@description : <font color="#400000">only the EPG data from the current station.</font>
+		**>
+		CM_ONLY_CURRENT_STATION
+
+		<**
+			@description : <font color="#400000">collection from EPG data from all receivable stations. </font>
+		**>
+		CM_ALL_RECEIVABLE_STATIONS
+	}
+
+}

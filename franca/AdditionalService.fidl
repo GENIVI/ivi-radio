@@ -1,0 +1,816 @@
+package IVIRadio.AdditionalService import
+IVIRadio.AdditionalService.AdditionalServiceTypes.* from
+"AdditionalService.fidl" import IVIRadio.Types.Types.* from "Types.fidl"
+import IVIRadio.AdditionalService.AdditionalServiceTypesOptions.* from
+"AdditionalService.fidl"
+
+<**
+	@description : Tuner generic and project independent interface for additional services. This interface provides functions to request data services and to configure them. Other services like announcements can also be configured.
+	@author : EGMG_Tuner
+**>
+
+interface AdditionalService {
+	version {
+		major 2
+		minor 0
+	}
+
+	<**
+		@description : Function to request data from one or many stations for a specific data service. It is possible to configure the request by the DataServiceOption parameter.
+	**>
+	method requestDataService {
+		in {
+
+			<**
+				@description : Parameter selects the requested data service.
+			**>
+			AdditionalServiceTypes.DataService dataService
+
+			<**
+				@description : Parameter is a list of stations for which the data is requested.
+			**>
+			StationSelectors selectors
+
+			<**
+				@description : Parameter for unified options
+			**>
+			AdditionalServiceTypesOptions.UnifiedServiceOption unifiedOptions
+
+			<**
+				@description : Parameter to configure the requested data service
+			**>
+			AdditionalServiceTypesOptions.DataServiceOption serviceOptions
+
+			<**
+				@description : An optional handle for identifying the request.
+			**>
+			UInt32 handle
+		}
+		out {
+
+			<**
+				@description : The handle of the corresponding request.
+			**>
+			UInt32 handleOut
+
+			<**
+				@description : The result of the request.
+			**>
+			Feedback feedback
+		}
+	}
+	method requestSubscribedServiceOptions {
+		in {
+
+			<**
+				@description : For which data service are the options requested
+			**>
+			AdditionalServiceTypes.DataService dataservice
+
+			<**
+				@description : An optional handle for identifying the request
+			**>
+			UInt32 handle
+		}
+		out {
+
+			<**
+				@description : The handle of the corresponding request
+			**>
+			UInt32 handleOut
+
+			<**
+				@description : The result of the request
+			**>
+			Feedback feedback
+		}
+	}
+
+	<**
+		@description : abort a currently active transmission of data
+	**>
+	method abort {
+		in {
+
+			<**
+				@description : data service a current transmission of data want to be stopeed for 
+			**>
+			AdditionalServiceTypes.DataService dataService
+
+			<**
+				@description : array of station selectors which are providing the currently transmitted data
+			**>
+			StationSelectors stationSelectors
+
+			<**
+				@description : unified options describing the request
+			**>
+			AdditionalServiceTypesOptions.UnifiedServiceOption unifiedOptions
+
+			<**
+				@description : specific parameter describing the data request
+			**>
+			AdditionalServiceTypesOptions.DataServiceOption dataServiceOption
+
+			<**
+				@description : An optional handle for identifying the request.
+			**>
+			UInt32 handle
+		}
+		out {
+
+			<**
+				@description : The handle of the corresponding request.
+			**>
+			UInt32 handleOut
+
+			<**
+				@description : The result of the request.
+			**>
+			Feedback feedback
+		}
+	}
+
+	<**
+		@description : Broadcast to return the requested data
+	**>
+	broadcast Data {
+		out {
+
+			<**
+				@description : Parameter for which stations the data is responsed
+			**>
+			StationSelectors stationSelectors
+
+			<**
+				@description : Parameter for which data service the data was requested
+			**>
+			AdditionalServiceTypes.DataService dataService
+
+			<**
+				@description : Parameters to identify the request
+			**>
+			AdditionalServiceTypesOptions.UnifiedServiceOption unifiedOptions
+
+			<**
+				@description : Parameters to identify the request
+			**>
+			AdditionalServiceTypesOptions.DataServiceOption selectOptions
+
+			<**
+				@description : Parameter describs the return format
+			**>
+			AdditionalServiceTypes.DataFormat format
+
+			<**
+				@description : Parameter describs the return type.
+			**>
+			AdditionalServiceTypes.DataType type
+
+			<**
+				@description :  Parameter is a specific struct depending which data is responsed.
+			**>
+			AdditionalServiceTypes.Data data
+
+			<**
+				@description : The handle of the corresponding selectComponent request
+			**>
+			UInt32 handleOut
+
+			<**
+				@description : Execution state of the job. if successful finished EC_OK
+			**>
+			ErrorCodes errorCode
+		}
+	}
+
+	<**
+		@description : Broadcast to provide information about the currently incoming announcement
+	**>
+	broadcast Announcement {
+		out {
+
+			<**
+				@description : list of station selectors for that the announcements were configured
+			**>
+			StationSelectors stationSelectors
+
+			<**
+				@description : configuratios of the announcement configured in the request
+			**>
+			AdditionalServiceTypes.AnnouncementConfigurations
+			announcementConfigurations
+
+			<**
+				@description : states of the announcement configured in that request
+			**>
+			AdditionalServiceTypes.arrayAnnouncementStates announcementStates
+
+			<**
+				@description : handle to identify the correct destination of a announcement broadcast
+			**>
+			UInt32 handleOut
+
+			<**
+				@description : execution state of the job. if successful finished EC_OK
+			**>
+			ErrorCodes errorCode
+		}
+	}
+
+	<**
+		@description : Broadcast to signalize that the announcement is finished
+	**>
+	broadcast AnnouncementFinished {
+		out {
+
+			<**
+				@description : information describing the finishing announcement 
+			**>
+			AdditionalServiceTypes.Announcement announcement
+
+			<**
+				@description : handle to identify the destination of the broadcast
+			**>
+			UInt32 handleOut
+
+			<**
+				@description : execution state of the job. if successful finished EC_OK
+			**>
+			ErrorCodes errorCode
+		}
+	}
+
+	<**
+		@description : Broadcast to return the subscribed service options
+	**>
+	broadcast SubscribedServiceOptions {
+		out {
+
+			<**
+				@description : The data service for the request
+			**>
+			AdditionalServiceTypes.DataService dataService
+
+			<**
+				@description : Array contains arrays of station selectors for which the data service options of the matching array ServiceOptions are valid
+			**>
+			arrayStationSelectors stationSelectors
+
+			<**
+				@description : Configurations matching to station selectors of the arrayStationSelectors
+			**>
+			AdditionalServiceTypesOptions.UnifiedServiceOptions unifiedOptions
+
+			<**
+				@description : Configurations matching to station selectors of the arrayStationSelectors
+			**>
+			AdditionalServiceTypesOptions.DataServiceOptions selectOptions
+
+			<**
+				@description : The handle of the corresponding selectComponent request
+			**>
+			UInt32 handleOut
+
+			<**
+				@description : execution state of the job. if successful finished EC_OK
+			**>
+			ErrorCodes errorCode
+		}
+	}
+
+}
+
+<**
+	@author : MGEG_Tuner
+**>
+typeCollection AdditionalServiceTypesOptions {
+	version {
+		major 2
+		minor 0
+	}
+
+	<**
+		@description : Structure for options which are selectable for all data services
+	**>
+	struct UnifiedServiceOption {
+
+		<**
+			@description : Request type
+		**>
+		UpdateType requestType
+
+		<**
+			@description : Object ID.
+		**>
+		UInt32 objectID
+	} array UnifiedServiceOptions of UnifiedServiceOption
+
+	<**
+		@description : Array for data service options
+	**>
+	array DataServiceOptions of DataServiceOption
+
+	<**
+		@description : Union for the selection of a data service. Depending on the data service another structure is used.
+	**>
+	union DataServiceOption {
+
+		<**
+			@description : Parameter for default type if no specific options are available
+		**>
+		No_Options DSO_NO_OPTION
+
+		<**
+			@description : Parameter for subtitle options.
+		**>
+		Subtitle_Options DSO_SUBTITLE
+
+		<**
+			@description : Parameter for teletext options.
+		**>
+		Teletext_Options DSO_TELETEXT
+
+		<**
+			@description : Parameter for EPG options
+		**>
+		EPG_Options DSO_EPG
+
+		<**
+			@description : Parameter for journaline options.
+		**>
+		Journaline_Options DSO_JOURNALINE
+
+		<**
+			@description : Parameter for Announcement options.
+		**>
+		Announcement_Options DSO_ANNOUNCEMENT
+
+		<**
+			@description : Parameter for EWS options.
+		**>
+		EWS_Options DSO_EWS
+
+		<**
+			@description : parameter for image options
+		**>
+		Image_Options DSO_IMAGE
+	}
+
+	<**
+		@description : image options
+	**>
+	struct Image_Options {
+
+		<**
+			@description : describes the image type of the transmitted image
+		**>
+		AdditionalServiceTypes.ImageType imageType
+
+		<**
+			@description : describes the data service of the transmitted servcie
+		**>
+		AdditionalServiceTypes.ImageService imageService
+
+		<**
+			@description : describes the width of the requested image
+		**>
+		UInt32 width
+
+		<**
+			@description : type describes the height 
+		**>
+		UInt32 heigth
+	}
+
+	<**
+		@description : Default options
+	**>
+	struct No_Options {
+	}
+
+	<**
+		@description : Journaline options
+	**>
+	struct Journaline_Options {
+
+		<**
+			@description : Entry object is requested
+		**>
+		Boolean Entry_Object
+	}
+
+	<**
+		@description : Subtitle options
+	**>
+	struct Subtitle_Options {
+
+		<**
+			@description : Possible/requested languages
+		**>
+		AdditionalServiceTypes.Languages Languages
+	}
+
+	<**
+		@description : Teletext options
+	**>
+	struct Teletext_Options {
+
+		<**
+			@description : Entry object is requested
+		**>
+		Boolean Entry_Page
+
+		<**
+			@description : Sub page with number x is requested
+		**>
+		UInt32 Sub_Page
+	}
+
+	<**
+		@description : EWS options
+	**>
+	struct EWS_Options {
+
+		<**
+			@description : Type of the emergency warning. 
+		**>
+		AdditionalServiceTypes.EWSType Type
+
+		<**
+			@description : Affected area of the emergency warning. 
+		**>
+		AdditionalServiceTypes.EWSAffectedArea Affected_Area
+	}
+
+	<**
+		@description : EPG options
+	**>
+	struct EPG_Options {
+
+		<**
+			@description : Start time to filter the epg data packet that is requested
+		**>
+		DateTime Start_Date_Time
+
+		<**
+			@description : End time to filter the returned epg data
+		**>
+		DateTime End_Date_Time
+
+		<**
+			@description : Genre to filter the returned epg data
+		**>
+		String Genre
+
+		<**
+			@description : Count of events which are requested from a start time
+		**>
+		UInt32 Count_Events
+	}
+
+	<**
+		@description : Options for announcements
+	**>
+	struct Announcement_Options {
+
+		<**
+			@description : Announcement configuration
+		**>
+		AdditionalServiceTypes.AnnouncementConfigurations Type_Configurations
+	}
+
+}
+
+<**
+	@author : MGEG_Tuner
+**>
+typeCollection AdditionalServiceTypes {
+	version {
+		major 2
+		minor 0
+	}
+	enumeration AnnouncementState {
+
+		<**
+			@description : describes if the notified announcement is available
+		**>
+		NotAvailable
+		Available
+		Active
+	}
+
+	<**
+		@description : array of announcement states
+	**>
+	array AnnouncementStates of AnnouncementState
+
+	array arrayAnnouncementStates of AnnouncementStates
+
+	<**
+		@description : Union for the return value of the data broadcast.
+	**>
+	union Data {
+
+		<**
+			@description : Data is returned as string (link).
+		**>
+		String stringData
+
+		<**
+			@description : Data is returned as bytebuffer.
+		**>
+		ByteBuffer byteBufferData
+	}
+
+	<**
+		@description : Enumeration for the data return formats.
+	**>
+	enumeration DataFormat {
+
+		<**
+			@description : Format XML
+		**>
+		DF_XML
+
+		<**
+			@description : Format HTML
+		**>
+		DF_HTML
+
+		<**
+			@description : Format picture
+		**>
+		DF_PICTURE
+
+		<**
+			@description : Format binary (RAW)
+		**>
+		DF_RAW
+	}
+
+	<**
+		@description : Enumeration for the data return types.
+	**>
+	enumeration DataType {
+
+		<**
+			@description : Data type string.
+		**>
+		DT_STRING
+
+		<**
+			@description : Data type stream.
+		**>
+		DT_STREAM
+
+		<**
+			@description : Data type byte buffer.
+		**>
+		DT_BYTEBUFFER
+	}
+
+	<**
+		@description : Affected area of the emergency warning. 
+	**>
+	enumeration EWSAffectedArea {
+		EAA_UNKNOWN
+		EAA_NATIONALWIDE
+		EAA_WIDEAREA
+		EAA_REGION
+		EAA_LOCAL
+		EAA_POINT
+	}
+
+	<**
+		@description : Type of the emergency warning. 
+	**>
+	enumeration EWSType {
+		ET_UNKNOWN
+		ET_EMERGENCY_WARNING
+		ET_EARTHQUAKE_WARNING
+		ET_TIDAL_WAVE_WARNING
+		ET_WEATHER_WARNING
+		ET_ROAD_TRAFFIC
+		ET_PERSONAL_CALL
+		ET_EVENT_ANNOUNCEMENT
+		ET_CAS_SERVICE_MESSAGE
+		ET_TEST_SIGNAL
+	}
+
+	<**
+		@description : enumeration for different image types
+	**>
+	enumeration ImageService {
+
+		<**
+			@description : type signalizes a categorized slideshow image 
+		**>
+		IS_CATEGORIZED_SLIDESHOW
+
+		<**
+			@description : type signalizes a slideshow image
+		**>
+		IS_SLIDESHOW
+
+		<**
+			@description : type signalizes an album cover image
+		**>
+		IS_ALBUM_COVER
+
+		<**
+			@description : type signalizes a station logo image
+		**>
+		IS_STATION_LOGO
+	}
+
+	enumeration ImageType {
+
+		<**
+			@description : image type indicates a front view of the booklet 
+		**>
+		IT_BOOKLET_FRONT
+
+		<**
+			@description : image type indicates a back view of the booklet
+		**>
+		IT_BOOKLET_BACK
+
+		<**
+			@description : image type indicates a view of the interpret 
+		**>
+		IT_INTERPRET
+	}
+
+	<**
+		@description : Struct for languages
+	**>
+	struct Language {
+		String Name
+	}
+
+	<**
+		@description : Array of languages
+	**>
+	array Languages of Language
+
+	<**
+		@description : Enumeration for data services.
+	**>
+	enumeration DataService {
+
+		<**
+			@description : No specific type, should cause an error.
+		**>
+		DS_NO_SERVICE
+
+		<**
+			@description : <font color="#0f0f0f">Subtitle service</font>
+		**>
+		DS_SUBTITLE
+
+		<**
+			@description : Teletext service.
+		**>
+		DS_TELETEXT
+
+		<**
+			@description : EPG service.
+		**>
+		DS_EPG
+
+		<**
+			@description : image service
+		**>
+		DS_IMAGE
+
+		<**
+			@description : TMC service.
+		**>
+		DS_TMC
+
+		<**
+			@description : TPEG  service.
+		**>
+		DS_TPEG
+
+		<**
+			@description : Journaline  service.
+		**>
+		DS_JOURNALINE
+
+		<**
+			@description : Announcement  service.
+		**>
+		DS_ANNOUNCEMENT
+
+		<**
+			@description : EWS service
+		**>
+		DS_EWS
+	}
+
+	<**
+		@description : Enumeration of announcement types.
+	**>
+	enumeration AnnouncementType {
+
+		<**
+			@description : Alarm announcement
+		**>
+		AT_ALARM
+
+		<**
+			@description : Road traffic announcement
+		**>
+		AT_ROAD_TRAFFIC
+
+		<**
+			@description : Transport flash announcement
+		**>
+		AT_TRANSPORT_FLASH
+
+		<**
+			@description : warning service announcement
+		**>
+		AT_WARNING_SERVICE
+
+		<**
+			@description : News announcement
+		**>
+		AT_NEWS
+
+		<**
+			@description : Area weather announcement
+		**>
+		AT_AREA_WEATHER
+
+		<**
+			@description : Event announcement
+		**>
+		AT_EVENT
+
+		<**
+			@description : Special event announcement
+		**>
+		AT_SEPECIAL_EVENT
+
+		<**
+			@description : Program information announcement
+		**>
+		AT_PROGRAM_INFORMATION
+
+		<**
+			@description : Sport announcement
+		**>
+		AT_SPORT_REPORT
+
+		<**
+			@description : Financial report announcement
+		**>
+		AT_FINANCIAL_REPORT
+	}
+
+	<**
+		@description : Structure for the current announcement with information about channel and type.
+	**>
+	struct Announcement {
+
+		<**
+			@description : Station which provides the announcement.
+		**>
+		StationSelector stationSelector
+
+		<**
+			@description : information about the announcement type. 
+		**>
+		AnnouncementType type
+	}
+
+	<**
+		@description : Structure for announcement types. For every type of announcement the availability is given. The user can activate or deactivate each type and he can change the priorities for every type
+	**>
+	struct AnnouncementConfiguration {
+
+		<**
+			@description : announcement types. 
+		**>
+		AnnouncementType type
+
+		<**
+			@description : activation of announcement type
+		**>
+		Activation active
+
+		<**
+			@description : priority for the type.
+		**>
+		UInt32 priority
+	}
+
+	<**
+		@description : Array type for announcement configuration
+	**>
+	array AnnouncementConfigurations of AnnouncementConfiguration
+
+}

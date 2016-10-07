@@ -1,0 +1,1155 @@
+package IVIRadio.Station import IVIRadio.Types.Types.* from "Types.fidl" import
+IVIRadio.Station.StationTypes.* from "Station.fidl"
+
+<**
+	@author : EGMG_Tuner
+**>
+
+interface Station {
+	version {
+		major 2
+		minor 0
+	}
+
+	<**
+		@description : deallocate a tuner resource  
+	**>
+	method abortTune {
+		in {
+
+			<**
+				@description : device on which tune process shall be aborted
+			**>
+			DeviceType deviceType
+
+			<**
+				@description : an optional handle for identifying the request
+			**>
+			UInt32 handle
+		}
+		out {
+
+			<**
+				@description : the handle of the corresponding request
+			**>
+			UInt32 handleOut
+
+			<**
+				@description : the result of the request
+			**>
+			Feedback feedback
+		}
+	}
+
+	<**
+		@description : make station permanent (tuning information will not be removed from middleware even if station is not receivable any more)
+	**>
+	method makePermanent {
+		in {
+
+			<**
+				@description : the frequency/station that should be marked as permanent
+			**>
+			StationSelector station
+
+			<**
+				@description : enable / disable the permanent flag
+			**>
+			Boolean permanent
+
+			<**
+				@description : an optional handle for identifying the request
+			**>
+			UInt32 handle
+		}
+		out {
+
+			<**
+				@description : the handle of the corresponding request
+			**>
+			UInt32 handleOut
+
+			<**
+				@description : the result of that request
+			**>
+			Feedback feedback
+		}
+	}
+
+	<**
+		@description : request explicit update of currentStation or stationList information. E.g. necessary after startup.
+	**>
+	method controlUpdate {
+		in {
+
+			<**
+				@description : update element: seek data, current station, station list
+			**>
+			StationTypes.UpdateElement updateElement
+
+			<**
+				@description : update type: One single update or continuously
+			**>
+			UpdateType updateType
+
+			<**
+				@description : the source type of interest (e. g. UNDEF, FM, AMFM)
+			**>
+			UInt32 sourceType
+
+			<**
+				@description : the station type of interest (e. g. RECEIVABLE, AUTOSTORE, PERMANENT)
+			**>
+			UInt32 stationType
+
+			<**
+				@description : an optional handle for identifying the request
+			**>
+			UInt32 handle
+		}
+		out {
+
+			<**
+				@description : the handle of the corresponding request
+			**>
+			UInt32 handleOut
+
+			<**
+				@description : the result of the request
+			**>
+			Feedback feedback
+		}
+	}
+
+	<**
+		@description : starts/stops a seek process
+	**>
+	method seek {
+		in {
+
+			<**
+				@description : device on which the seek shall run
+			**>
+			DeviceType device
+
+			<**
+				@description : the requested seek mode and genre/PTY mask
+			**>
+			StationTypes.SeekMode seekMode
+
+			<**
+				@description : consider only satations of this genre
+			**>
+			UInt8 genre
+
+			<**
+				@description : additional flags to be considered (device and project dependent)
+			**>
+			UInt32s flags
+
+			<**
+				@description : an optional handle for identifying the request
+			**>
+			UInt32 handle
+		}
+		out {
+
+			<**
+				@description : the handle of the corresponding request
+			**>
+			UInt32 handleOut
+
+			<**
+				@description : the result of the request
+			**>
+			Feedback feedback
+		}
+	}
+
+	<**
+		@description : start tuning a frequency or selecting a station
+	**>
+	method startTune {
+		in {
+
+			<**
+				@description : the station / frequency that should be tuned to
+			**>
+			StationSelector station
+
+			<**
+				@description : required selection mode
+			**>
+			StationTypes.SelectionMode selectionMode
+
+			<**
+				@description : an optional handle for identifying the request
+			**>
+			UInt32 handle
+		}
+		out {
+
+			<**
+				@description : handle of the corresponding request
+			**>
+			UInt32 handleOut
+
+			<**
+				@description : the result of the request
+			**>
+			Feedback feedback
+		}
+	}
+
+	<**
+		@description : information about the currently active station
+	**>
+	broadcast currentStation {
+		out {
+
+			<**
+				@description : up-to-date information about the current station (optionally with additional metadata strings)
+			**>
+			StationTypes.Station current
+
+			<**
+				@description : The handle of the corresponding controlUpdate request
+			**>
+			UInt32 handleOut
+
+			<**
+				@description : information of the job execution status
+			**>
+			ErrorCodes errorCode
+		}
+	}
+
+	<**
+		@description : seek information sent during an active search.
+	**>
+	broadcast seek {
+		out {
+
+			<**
+				@description : the current seek data
+			**>
+			StationTypes.SeekData seekData
+
+			<**
+				@description : the handle of the corresponding controlUpdate request
+			**>
+			UInt32 handleOut
+
+			<**
+				@description : information of the job execution status
+			**>
+			ErrorCodes errorCode
+		}
+	}
+
+	<**
+		@description : station list information.
+	**>
+	broadcast stationList {
+		out {
+
+			<**
+				@description : the current station list update (different station types might exist in parallel).
+			**>
+			StationTypes.StationList list
+
+			<**
+				@description : the handle of the corresponding controlUpdate request
+			**>
+			UInt32 handleOut
+
+			<**
+				@description : information of the job execution status
+			**>
+			ErrorCodes errorCode
+		}
+	}
+
+}
+
+<**
+	@author : MGEG_Tuner
+**>
+typeCollection StationTypes {
+	version {
+		major 2
+		minor 0
+	}
+
+	<**
+		@description : Type of meta data (device dependent, refer to specific hbtd file)
+	**>
+	struct Metadata {
+
+		<**
+			@description : additional information to be defined
+		**>
+		String str
+
+		<**
+			@description : Type of meta data (device dependent, refer to specific hbtd file)
+		**>
+		UInt8 type
+	}
+
+	<**
+		@description : Seek mode relevant data
+	**>
+	struct SeekData {
+
+		<**
+			@description : Value in frequency or progress in percent 
+		**>
+		UInt32 data
+
+		<**
+			@description : The current seek mode
+		**>
+		SeekMode mode
+
+		<**
+			@description : The current frequency (during seek mode)
+		**>
+		SeekReturnValue returnValue
+	}
+
+	<**
+		@description : All important information about a station
+	**>
+	struct Station {
+
+		<**
+			@description : Additional flags (device and project specific, refer to specific hbtd file)
+		**>
+		UInt32 flags
+
+		<**
+			@description : Genres of station (indices are device and project dependent, refer to specific hbtd file)
+		**>
+		UInt32s genre
+
+		<**
+			@description : Vector of metadata (e.g. RT+ or DL+), only currently available types are part of this vector.
+		**>
+		Metadatas meta
+
+		<**
+			@description : Name vector (indices are device and project dependent, refer to specific hbtd file)
+		**>
+		Strings name
+
+		<**
+			@description : The quality vector (indices are device and project dependent, refer to specific hbtd file)
+		**>
+		UInt32s quality
+
+		<**
+			@description : Frequency and ID vector, can be directly passed into requestStartTune().
+		**>
+		StationSelector sel
+
+		<**
+			@description : Station type characterized by a bit field (available bits are defined in StationType enum)
+		**>
+		UInt32 stationType
+	}
+
+	<**
+		@description : Station list
+	**>
+	struct StationList {
+
+		<**
+			@description : Bit field characterizing the emitting tuner source (SourceType enum). That is the ORing of all possible deviceTypes in this list.
+		**>
+		UInt32 deviceType
+
+		<**
+			@description : list of stations
+		**>
+		Stations stations
+
+		<**
+			@description : Containing station types characterized by a bit field (available bits are defined in StationType enum). That is the ORing of all possible stationTypes in this list.
+		**>
+		UInt32 stationType
+	}
+
+	<**
+		@description : A vector of stations
+	**>
+	array Stations of Station
+
+	<**
+		@description : Pairs of MetaData
+	**>
+	array Metadatas of Metadata
+
+	<**
+		@description : possible selection modes
+	**>
+	enumeration SelectionMode {
+
+		<**
+			@description : Undefined selection mode
+		**>
+		SM_UNDEF
+
+		<**
+			@description : Direct frequency input
+		**>
+		SM_DIRECT
+
+		<**
+			@description : Station selected from background list
+		**>
+		SM_LIST
+
+		<**
+			@description : Preset selection
+		**>
+		SM_PRESET
+	}
+
+	<**
+		@description : No seek off, stop possible running seek mode
+	**>
+	enumeration SeekMode {
+
+		<**
+			@description : No seek off, stop possible running seek mode
+		**>
+		SM_OFF
+
+		<**
+			@description : Skip to next valid frequency
+		**>
+		SM_MAN_UP
+
+		<**
+			@description : Skip to previous valid frequency
+		**>
+		SM_MAN_DOWN
+
+		<**
+			@description : Search next receivable station
+		**>
+		SM_AUTO_UP
+
+		<**
+			@description : Search previous receivable station
+		**>
+		SM_AUTO_DOWN
+
+		<**
+			@description : Scan the available stations (upwards)
+		**>
+		SM_SCAN_UP
+
+		<**
+			@description : Scan the available stations (downwards)
+		**>
+		SM_SCAN_DOWN
+
+		<**
+			@description : While scan is active: Skip to next station
+		**>
+		SM_SCAN_SKIP_UP
+
+		<**
+			@description : While scan is active: Skip to previous station
+		**>
+		SM_SCAN_SKIP_DOWN
+
+		<**
+			@description : Autostore current waveband
+		**>
+		SM_AUTOSTORE
+	}
+
+	<**
+		@description : This enumeration contains the different possibilities of return values for the seek broadcast.
+	**>
+	enumeration SeekReturnValue {
+
+		<**
+			@description : seek return value is a frequency
+		**>
+		SM_FREQUENCY
+
+		<**
+			@description : seek return value is in percentage
+		**>
+		SM_PERCENTAGE
+	}
+
+	<**
+		@description : Generic tuner station characteristics
+	**>
+	enumeration StationType {
+		ST_UNDEF = "0x0000"
+
+		<**
+			@description : Station receivable
+		**>
+		ST_RECEIVABLE = "0x0001"
+
+		<**
+			@description : Station receivable
+		**>
+		ST_PERMANENT = "0x0002"
+
+		<**
+			@description : Station is part of autostore list
+		**>
+		ST_AUTOSTORED = "0x0004"
+
+		<**
+			@description : This entry is an ensemble (multiplex), information about the ensemble (e.g. id or name) is part of the station struct.
+		**>
+		ST_ENSEMBLE = "0x0008"
+
+		<**
+			@description : This entry is a service, information about the service (e.g. id or name) is part of the station struct.
+		**>
+		ST_SERVICE = "0x0010"
+
+		<**
+			@description : This entry is a primary component, information about the component (e.g. id or name) is part of the station struct.
+		**>
+		ST_PRIMARY = "0x0020"
+
+		<**
+			@description : This entry is a secondary component, information about the component (e.g. id or name) is part of the station struct.
+		**>
+		ST_SECONDARY = "0x0040"
+
+		<**
+			@description : Data changed since last update
+		**>
+		ST_CHANGED = "0x8000"
+	}
+
+	<**
+		@description : Update elements that can be received (i.e. broadcasts/informations/attributes/signals)
+	**>
+	enumeration UpdateElement {
+
+		<**
+			@description : Seek data (seek)
+		**>
+		UE_SEEK
+
+		<**
+			@description : Current station (currentStation)
+		**>
+		UE_CURRENT_STATION
+
+		<**
+			@description : Station list (stationList)
+		**>
+		UE_STATION_LIST
+	}
+
+	<**
+		@description : Those flags are describing the properties of a AMFM station
+	**>
+	enumeration FlagsDefAmFm {
+
+		<**
+			@description : station provides TP
+		**>
+		AMFM_FLG_TP = "0x0001"
+
+		<**
+			@description : Station provides TA
+		**>
+		AMFM_FLG_ANN_TA = "0x0002"
+
+		<**
+			@description : Music/Speech
+		**>
+		AMFM_FLG_MS = "0x0004"
+
+		<**
+			@description : Station provides TMC
+		**>
+		AMFM_FLG_TMC = "0x0008"
+
+		<**
+			@description : HD digital audio available
+		**>
+		AMFM_FLG_HDDIGAUDIO = "0x0010"
+
+		<**
+			@description : HD is encrypted
+		**>
+		AMFM_FLG_HDENCRYPTED = "0x0020"
+
+		<**
+			@description : HD Ball game mode
+		**>
+		AMFM_FLG_HDBALLGAME = "0x0040"
+
+		<**
+			@description : Station Logo
+		**>
+		AMFM_FLG_IMG_STATIONLOGO = "0x0080"
+	}
+
+	<**
+		@description : those flags are describing the properties of a DAB station
+	**>
+	enumeration FlagsDefDab {
+
+		<**
+			@description : Reception: Frequency locked		
+		**>
+		DAB_FLG_LOCKED = "0x0000001"
+
+		<**
+			@description : Reception: Valid audio stream 
+		**>
+		DAB_FLG_VALID = "0x0000002"
+
+		<**
+			@description : Reception: Service muted
+		**>
+		DAB_FLG_MUTED = "0x0000004"
+
+		<**
+			@description : Reception: Ensemble muted
+		**>
+		DAB_FLG_ENS_MUTED = "0x0000008"
+
+		<**
+			@description : Announcement: Information about a serious or even life-threatening situation such as: nuclear fallout or war
+		**>
+		DAB_FLG_ANN_ALARM = "0x0000010"
+
+		<**
+			@description : Announcement: Information about problems on the road
+		**>
+		DAB_FLG_ANN_TRAFFIC = "0x0000020"
+
+		<**
+			@description : Announcement: Information concerning Public Transport, such as: schedules of buses, derries, plains or trains
+		**>
+		DAB_FLG_ANN_TRANSPORT = "0x0000040"
+
+		<**
+			@description : Announcement: Information about incidents of less importance than Alarm  Announcements, such as: disruption of power or water supplies
+		**>
+		DAB_FLG_ANN_WARNING = "0x0000080"
+
+		<**
+			@description : Announcement: News bulletin
+		**>
+		DAB_FLG_ANN_NEWS = "0x0000100"
+
+		<**
+			@description : Announcement: Weather bulletin
+		**>
+		DAB_FLG_ANN_WEATHER = "0x0000200"
+
+		<**
+			@description : Announcement: Information about commercial, cultural or public events
+		**>
+		DAB_FLG_ANN_EVENT = "0x0000400"
+
+		<**
+			@description : Announcement: Information on unscheduled or previously unforeseen events
+		**>
+		DAB_FLG_ANN_SPECIAL_EVENT = "0x0000800"
+
+		<**
+			@description : Announcement: Information about current or future radio broadcasts or programmes
+		**>
+		DAB_FLG_ANN_PROGRAMM_INFO = "0x0001000"
+
+		<**
+			@description : Announcement: Bulletin of news about sport
+		**>
+		DAB_FLG_ANN_SPORT = "0x0002000"
+
+		<**
+			@description : Announcement: Bulletin of news about finance or business
+		**>
+		DAB_FLG_ANN_FINANCES = "0x0004000"
+
+		<**
+			@description : Data service: Electronic program guide (EPG)	 
+		**>
+		DAB_FLG_EPG = "0x0008000"
+
+		<**
+			@description : Data service: Journaline
+		**>
+		DAB_FLG_JLN = "0x0010000"
+
+		<**
+			@description : Data service: Slideshow (NPAD) 
+		**>
+		DAB_FLG_IMG_SLS_NPAD = "0x0020000"
+
+		<**
+			@description : Data service: Slideshow (XPAD)
+		**>
+		DAB_FLG_IMG_SLS_XPAD = "0x0040000"
+
+		<**
+			@description : Data service: TMC
+		**>
+		DAB_FLG_TMC = "0x0080000"
+
+		<**
+			@description : Data service: TPEG
+		**>
+		DAB_FLG_TPEG = "0x0100000"
+
+		<**
+			@description : Data Service: Broadcast Website
+		**>
+		DAB_FLG_BWS = "0x0200000"
+
+		<**
+			@description : Coding: MPEG2 coding
+		**>
+		DAB_FLG_MPEG2 = "0x0400000"
+
+		<**
+			@description : Coding: AAC coding
+		**>
+		DAB_FLG_AAC = "0x0800000"
+
+		<**
+			@description : Categorized Slideshow
+		**>
+		DAB_FLG_IMG_CSLS = "0x1000000"
+
+		<**
+			@description : Album Cover
+		**>
+		DAB_FLG_IMG_ALBUMCOVER = "0x2000000"
+
+		<**
+			@description : Station Logo
+		**>
+		DAB_FLG_IMG_STATIONLOGO = "0x4000000"
+	}
+
+	<**
+		@description : flags describing the properties of a UNDEF station
+	**>
+	enumeration FlagsDefUndef {
+
+		<**
+			@description : Reception: Audio muted
+		**>
+		UNDEF_FLG_MUTED = "0x0000001"
+
+		<**
+			@description : Announcement: Information about a serious or even life-threatening situation such as: nuclear fallout or war
+		**>
+		UNDEF_FLG_ANN_ALARM = "0x0000002"
+
+		<**
+			@description : Announcement: Information about problems on the road
+		**>
+		UNDEF_FLG_ANN_TRAFFIC = "0x0000004"
+
+		<**
+			@description : Announcement: Information concerning Public Transport, such as: schedules of buses, derries, plains or trains
+		**>
+		UNDEF_FLG_ANN_TRANSPORT = "0x0000008"
+
+		<**
+			@description : Announcement: Information about incidents of less importance than Alarm  Announcements, such as: disruption of power or water supplies
+		**>
+		UNDEF_FLG_ANN_WARNING = "0x0000010"
+
+		<**
+			@description : Announcement: News bulletin
+		**>
+		UNDEF_FLG_ANN_NEWS = "0x0000020"
+
+		<**
+			@description : Announcement: Weather bulletin
+		**>
+		UNDEF_FLG_ANN_WEATHER = "0x0000040"
+
+		<**
+			@description : Announcement: Information about commercial, cultural or public events
+		**>
+		UNDEF_FLG_ANN_EVENT = "0x0000080"
+
+		<**
+			@description : Announcement: Information on unscheduled or previously unforeseen events
+		**>
+		UNDEF_FLG_ANN_SPECIAL_EVENT = "0x0000100"
+
+		<**
+			@description : Announcement: Information about current or future radio broadcasts or programmes
+		**>
+		UNDEF_FLG_ANN_PROGRAMM_INFO = "0x0000200"
+
+		<**
+			@description : Announcement: Bulletin of news about sport
+		**>
+		UNDEF_FLG_ANN_SPORT = "0x0000400"
+
+		<**
+			@description : Announcement: Bulletin of news about finance or business
+		**>
+		UNDEF_FLG_ANN_FINANCES = "0x0000800"
+
+		<**
+			@description : Data service: Electronic program guide (EPG)	 
+		**>
+		UNDEF_FLG_EPG = "0x0001000"
+
+		<**
+			@description : Data service: Journaline
+		**>
+		UNDEF_FLG_JLN = "0x0002000"
+
+		<**
+			@description : Data service: Slideshow (NPAD)<i>  </i>
+		**>
+		UNDEF_FLG_IMG_SLS_NPAD = "0x0004000"
+
+		<**
+			@description : Data service: Slideshow (XPAD)
+		**>
+		UNDEF_FLG_IMG_SLS_XPAD = "0x0008000"
+
+		<**
+			@description : Data service: TMC
+		**>
+		UNDEF_FLG_TMC = "0x0010000"
+
+		<**
+			@description : Data service: TPEG
+		**>
+		UNDEF_FLG_TPEG = "0x0020000"
+
+		<**
+			@description : Data service: Broadcast websites
+		**>
+		UNDEF_FLG_BWS = "0x0040000"
+
+		<**
+			@description : Coding: MPEG2 coding
+		**>
+		UNDEF_FLG_MPEG2 = "0x0080000"
+
+		<**
+			@description : Coding: AAC coding
+		**>
+		UNDEF_FLG_AAC = "0x0100000"
+
+		<**
+			@description : Categorized slideshow
+		**>
+		UNDEF_FLG_IMG_CSLS = "0x0200000"
+
+		<**
+			@description : Album Cover
+		**>
+		UNDEF_FLG_IMG_ALBUMCOVER = "0x0400000"
+
+		<**
+			@description : Station logo
+		**>
+		UNDEF_FLG_IMG_STATIONLOGO = "0x0800000"
+
+		<**
+			@description : Subtitle
+		**>
+		UNDEF_FLG_SUBTITLE = "0x1000000"
+
+		<**
+			@description : Teletext
+		**>
+		UNDEF_FLG_TELETEXT = "0x2000000"
+	}
+
+	<**
+		@description : genre vector indices for AM/FM/HD devices
+	**>
+	enumeration GenreIndexAmFm {
+
+		<**
+			@description : PTY code
+		**>
+		AMFM_GEN_PTY
+	}
+
+	<**
+		@description : genre vector indices for DAB/DMB devices
+	**>
+	enumeration GenreIndexDab {
+
+		<**
+			@description : Static PTY code
+		**>
+		DAB_GEN_STATIC_PTY
+
+		<**
+			@description : Dynamic PTY code
+		**>
+		DAB_GEN_DYNAMIC_PTY
+	}
+
+	<**
+		@description : Station.genre vector indices for the "UNDEF" device
+	**>
+	enumeration GenreIndexUndef {
+
+		<**
+			@description : Static genre information
+		**>
+		UNDEF_GEN_STATIC
+
+		<**
+			@description : Dynamic genre information
+		**>
+		UNDEF_GEN_DYNAMIC
+	}
+
+	<**
+		@description : StationSelector ID vector indices for AM/FM/HD devices
+	**>
+	enumeration IdIndexAmFm {
+
+		<**
+			@description : Unique key
+		**>
+		AMFM_ID_KEY
+
+		<**
+			@description : Frequency [kHz]
+	
+		**>
+		AMFM_ID_FREQUENCY
+
+		<**
+			@description : Program identifier
+		**>
+		AMFM_ID_PI
+
+		<**
+			@description : HD service (0: MPS, 1: SPS1, ..)
+		**>
+		AMFM_ID_SERVICE
+	}
+
+	<**
+		@description : StationSelector ID vector indices for AM/FM/HD devices
+	**>
+	enumeration IdIndexDab {
+
+		<**
+			@description : Unique key
+		**>
+		DAB_ID_KEY
+
+		<**
+			@description :  Frequency [kHz]
+		**>
+		DAB_ID_FREQUENCY
+
+		<**
+			@description : Ensemble identifier
+		**>
+		DAB_ID_ENSEMBLE
+
+		<**
+			@description : Service identifier
+		**>
+		DAB_ID_SERVICE
+
+		<**
+			@description : Component identifier
+		**>
+		DAB_ID_COMPONENT
+	}
+
+	<**
+		@description : StationSelector ID vector indices for the "UNDEF" device
+	**>
+	enumeration IdIndexUndef {
+
+		<**
+			@description : Unique key
+		**>
+		UNDEF_ID_KEY
+
+		<**
+			@description : Optional: Unique key of the parent in case of subservices
+		**>
+		UNDEF_ID_PARENT
+	}
+
+	<**
+		@description : Station.meta vector indices for AM/FM/HD devices
+	**>
+	enumeration MetaIndexAmFm {
+	}
+
+	<**
+		@description : Station.meta vector indices for DAB/DMB devices
+	**>
+	enumeration MetaIndexDab {
+	}
+
+	<**
+		@description : Station.meta vector indices for the "UNDEF" device
+	**>
+	enumeration MetaIndexUndef {
+	}
+
+	<**
+		@description : Station.name vector indices for AM/FM/HD devices
+	**>
+	enumeration NameIndexAmFm {
+
+		<**
+			@description : PS code
+		**>
+		AMFM_NAM_PS
+
+		<**
+			@description : HD label
+		**>
+		AMFM_NAM_HD
+
+		<**
+			@description : RadioText
+		**>
+		AMFM_NAM_RT
+	}
+
+	<**
+		@description : Station.name vector indices for DAB/DMB devices
+	**>
+	enumeration NameIndexDab {
+
+		<**
+			@description : Subcomponent label
+		**>
+		DAB_NAM_CLONG
+
+		<**
+			@description : component label short
+		**>
+		DAB_NAM_CSHORT
+
+		<**
+			@description : dynamic label
+		**>
+		DAB_NAM_DYNAMIC
+
+		<**
+			@description : Service label
+		**>
+		DAB_NAM_SLONG
+
+		<**
+			@description : Service abbreviation
+		**>
+		DAB_NAM_SSHORT
+
+		<**
+			@description : Ensemble label
+		**>
+		DAB_NAM_ELONG
+
+		<**
+			@description : Ensemble abbreviation
+		**>
+		DAB_NAM_ESHORT
+
+		<**
+			@description : Frequency label
+		**>
+		DAB_NAM_FREQUENCY
+	}
+
+	<**
+		@description : Station.name vector indices for the "UNDEF" device
+	**>
+	enumeration NameIndexUndef {
+
+		<**
+			@description : Long name / label
+		**>
+		UNDEF_NAM_LONG
+
+		<**
+			@description : short name / label
+		**>
+		UNDEF_NAM_SHORT
+
+		<**
+			@description : dynamic name / label
+		**>
+		UNDEF_NAM_DYNAMIC
+	}
+
+	<**
+		@description : Station.quality vector indices for AM/FM/HD devices
+	**>
+	enumeration QualityIndexAmFm {
+
+		<**
+			@description : Fieldstrength [dbuV]
+		**>
+		AMFM_QAL_FIELDSTRENGTH
+
+		<**
+			@description : Multipath
+		**>
+		AMFM_QAL_MULTIPATH
+
+		<**
+			@description : Digital quality
+		**>
+		AMFM_QAL_DIGITAL
+	}
+
+	enumeration QualityIndexDab {
+
+		<**
+			@description : Bit error rate
+		**>
+		DAB_QAL_BER
+
+		<**
+			@description : Service quality
+		**>
+		DAB_QAL_SERVICE
+
+		<**
+			@description : Audio qualtiy
+		**>
+		DAB_QAL_AUDIO
+	}
+
+	<**
+		@description : Station.quality vector indices for the "UNDEF" device
+	**>
+	enumeration QualityIndexUndef {
+
+		<**
+			@description : Generic audio quality, comparable between devices
+		**>
+		UNDEF_QAL_AUDIO
+	}
+
+}
